@@ -163,7 +163,7 @@ class Prediction_Model:
 
         model_pipeline = Pipeline(steps=[
             ('preprocessing', preprocessor),
-            ('model', RandomForestRegressor(n_estimators=200,min_samples_leaf=4,max_depth=15, random_state=42))
+            ('model', RandomForestRegressor(n_estimators=170,max_depth=15, random_state=42))
         ])
 
         model_pipeline.fit(x_train,y_train)
@@ -174,8 +174,7 @@ class Prediction_Model:
             joblib.dump(model_pipeline,save_path, compress=3 )
         except FileNotFoundError as e:
             print("Prediction model saved Directory not exist.")
-            print(e)    
-            
+            print(e)
         print("model saved successfully.")
 
 

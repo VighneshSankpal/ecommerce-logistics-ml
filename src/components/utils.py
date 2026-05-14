@@ -3,7 +3,7 @@ import os
 import pandas as pd
 import joblib
 import numpy as np
- 
+
 
 def navigator():
     # ── Page Navigation ───────────────────────────────────────────────────────────
@@ -126,6 +126,9 @@ def create_record(inputs:dict, dataset:dict,model):
 
     # seller performance features
     seller_performce_row = seller[seller['seller_id'] ==inputs['seller_id_inp']]
+    if seller_performce_row.empty:
+        st.warning("No seller record available.")
+        return -1
     seller_timely_delivery_avg,seller_previous_order_count = seller_performce_row[['seller_timely_delivery_avg','seller_previous_order_count']].values[0]
     
 
@@ -159,7 +162,7 @@ def create_record(inputs:dict, dataset:dict,model):
     features_df = pd.DataFrame([features])
     print(f'shape of the features is {features_df.shape}')
     y_pred = model.predict(features_df)
-    y_pred= np.expm1(y_pred)
+  
     y_pred = np.round(y_pred)[0]
     st.session_state.predicted_days = int( y_pred)
     print(f'{y_pred} Delivery days required.')
